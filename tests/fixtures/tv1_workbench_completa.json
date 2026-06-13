@@ -1,0 +1,845 @@
+{
+  "schemaVersion": "1.22",
+  "id": "WB-62495-20260612-00000",
+  "investigationStatus": "New",
+  "status": "Open",
+  "investigationResult": "No Findings",
+  "workbenchLink": "https://portal.example/workbench/WB-TEST",
+  "alertProvider": "SAE",
+  "modelId": "6f54402d-2c5e-4c7b-acd5-c11dc2bc6b9a",
+  "model": "Test",
+  "modelType": "custom",
+  "score": 60,
+  "severity": "high",
+  "createdDateTime": "2026-06-12T14:43:32Z",
+  "updatedDateTime": "2026-06-12T14:43:55Z",
+  "ownerIds": [],
+  "incidentId": "IC-62495-20260612-00000",
+  "impactScope": {
+    "desktopCount": 1,
+    "serverCount": 0,
+    "accountCount": 1,
+    "emailAddressCount": 0,
+    "containerCount": 0,
+    "cloudIdentityCount": 0,
+    "cloudWorkloadCount": 0,
+    "entities": [
+      {
+        "entityType": "account",
+        "entityValue": "NT AUTHORITY\\SYSTEM",
+        "entityId": "NT AUTHORITY\\SYSTEM",
+        "relatedEntities": [
+          "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+        ],
+        "relatedIndicatorIds": [],
+        "provenance": [
+          "Alert"
+        ]
+      },
+      {
+        "entityType": "host",
+        "entityValue": {
+          "guid": "2472F15B-F35F-45D6-BF35-DC5316ACFDA9",
+          "name": "WS-TEST-01",
+          "ips": [
+            "fe80::fab1:a517:58e6:cc16",
+            "192.0.2.50"
+          ]
+        },
+        "entityId": "2472F15B-F35F-45D6-BF35-DC5316ACFDA9",
+        "relatedEntities": [
+          "NT AUTHORITY\\SYSTEM"
+        ],
+        "relatedIndicatorIds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40
+        ],
+        "provenance": [
+          "Alert"
+        ],
+        "managementScopeGroupId": "f11921e2-7b14-4859-b248-17c3339c3423",
+        "managementScopeInstanceId": "7ced8d4b-60dc-6a0e-d1ba-004e24ff27f4",
+        "managementScopePartitionKey": "f11921e2-7b14-4859-b248-17c3339c3423"
+      }
+    ]
+  },
+  "description": "",
+  "matchedRules": [
+    {
+      "id": "6ab4f4bc-0a93-4f5e-b2c8-fad7bcebf6af",
+      "name": "Default Custom Rule",
+      "matchedFilters": [
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.599Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "e0dfd3c3-7d27-4ec7-a332-878d0cdae9f7",
+              "matchedDateTime": "2026-06-12T14:30:11.599Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.599Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "14a3ce1f-2915-4e1a-9dfe-d4f8a2247397",
+              "matchedDateTime": "2026-06-12T14:30:11.599Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.599Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "b5b90b52-1689-424d-96dd-862de8650bc4",
+              "matchedDateTime": "2026-06-12T14:30:11.599Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.615Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "639004b3-af54-45be-8587-6048f4b8f1fd",
+              "matchedDateTime": "2026-06-12T14:30:11.615Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.615Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "6b4d2cbb-8c66-4d6f-bbcd-b9cda892422f",
+              "matchedDateTime": "2026-06-12T14:30:11.615Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.615Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "9b487a52-936b-4174-a6e0-95f2723eff00",
+              "matchedDateTime": "2026-06-12T14:30:11.615Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.615Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "f0ba0c7e-f363-40de-839f-9243d998c7e2",
+              "matchedDateTime": "2026-06-12T14:30:11.615Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.630Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "1eb9a9da-98be-4b5a-b6c1-239096e379cc",
+              "matchedDateTime": "2026-06-12T14:30:11.630Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.630Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "6c248c27-b1bf-4e92-9945-f4d50d3ac585",
+              "matchedDateTime": "2026-06-12T14:30:11.630Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        },
+        {
+          "id": "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29",
+          "name": "Test",
+          "matchedDateTime": "2026-06-12T14:30:11.630Z",
+          "mitreTechniqueIds": [],
+          "matchedEvents": [
+            {
+              "uuid": "f9657eca-8826-407f-84ae-be758ef20892",
+              "matchedDateTime": "2026-06-12T14:30:11.630Z",
+              "type": "TELEMETRY_FILE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "indicators": [
+    {
+      "id": 1,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "command_line",
+      "field": "parentCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "command_line",
+      "field": "processCmd",
+      "value": "\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\EDGEMITMP_431AB.tmp\\setup.exe\" --install-archive=\"C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\Install\\{5045A0A6-D42E-4E8F-A96E-0B9B4E2AACDF}\\MicrosoftEdge_X64_149.0.4022.66_149.0.4022.54.exe\" --previous-version=\"149.0.4022.54\" --mscopilot --verbose-logging --do-not-launch-msedge --system-level --channel=stable --copilot-upgrade-only=2",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\SmallLogo.png",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\resources.pri",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\resources.internal.pri",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\SmallLogoCopilotDev.png",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\SmallLogoCopilot.png",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\SmallLogoCanary.png",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 27,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\SmallLogoBeta.png",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\vision.contrast-white.svg",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 29,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\SmallLogoDev.png",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "fullpath",
+      "field": "objectFilePath",
+      "value": "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\149.0.4022.66\\VisualElements\\vision.contrast-black.svg",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 33,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 34,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 37,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "user_account",
+      "field": "processUser",
+      "value": "SYSTEM",
+      "relatedEntities": [
+        "2472F15B-F35F-45D6-BF35-DC5316ACFDA9"
+      ],
+      "filterIds": [
+        "4e47c4b1-f552-5ff5-90cb-f6180b5eeb29"
+      ],
+      "provenance": [
+        "Alert"
+      ]
+    }
+  ]
+}
