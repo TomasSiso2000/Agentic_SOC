@@ -81,7 +81,24 @@ async def lifespan(app: FastAPI):
 
         await init_db(settings.state_db_path)
 
+    # Poller de Trend Vision One (background task)
+    tv1_task = None
+    if settings.enable_tv1_poller:
+        from src.tv1_poller import run_tv1_poller
+        from src.tv1_state import init_tv1_tables
+
+        await init_tv1_tables(settings.state_db_path)
+        tv1_task = asyncio.create_task(
+            run_tv1_poller(settings, _run_triage_in_background)
+        )
+
     yield
+    if tv1_task is not None:
+        tv1_task.cancel()
+        try:
+            await tv1_task
+        except asyncio.CancelledError:
+            pass
     logger.info("SOC L1 service shutting down")
 
 

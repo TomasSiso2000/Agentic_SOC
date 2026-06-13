@@ -219,6 +219,19 @@ class Settings(BaseSettings):
     enable_enricher: bool = Field(default=False)
     enable_threat_intel: bool = Field(default=False)
     enable_narrator: bool = Field(default=False)
+    
+    # ===== Trend Vision One (poller de Workbench alerts) =====
+    tv1_base_url: str = Field(default="")
+    tv1_api_token: str = Field(default="")
+    tv1_poll_interval_seconds: int = Field(default=60)
+    tv1_poll_overlap_seconds: int = Field(default=120)
+    tv1_initial_lookback_minutes: int = Field(default=5)
+    tv1_min_severity: str = Field(default="")
+    enable_tv1_poller: bool = Field(default=False)
+
+    def tv1_configured(self) -> bool:
+        """True si estan los 2 datos minimos para hablar con la API de TV1."""
+        return bool(self.tv1_base_url and self.tv1_api_token)
 
     def protected_users_set(self) -> set[str]:
         """Parsea protected_users a un set lowercase para lookup eficiente."""
