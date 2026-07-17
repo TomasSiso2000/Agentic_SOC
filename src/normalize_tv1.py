@@ -137,31 +137,93 @@ def _device_from_alert(alert: WorkbenchAlert) -> Device:
     return Device()
 
 
-def _files_from_indicators(alert: WorkbenchAlert) -> list[FileEvidence]:
-    """Indicators de archivo -> FileEvidence.
-
-    - type 'fullpath'           -> path (+ name derivado del basename)
-    - type/field con 'sha256'   -> sha256
-    Se deduplican por valor (TV1 suele repetir el mismo path en N eventos).
-    """
-    files: list[FileEvidence] = []
-    seen: set[str] = set()
+def _indicator_values(alert: WorkbenchAlert, *types: str) -> list[str]:
+    """Valores string (no vacios, deduplicados, en orden) de los indicators dados."""
+    out: list[str] = []
     for ind in alert.indicators:
-        if not isinstance(ind.value, str) or not ind.value:
-            continue
-        key = f"{ind.type}:{ind.value}"
-        if key in seen:
-            continue
+        if ind.type in types and isinstance(ind.value, str) and ind.value.strip():
+            value = ind.value.strip()
+            if value not in out:
+                out.append(value)
+    return out
 
-        ind_kind = f"{ind.type} {ind.field}".lower()
-        if ind.type == "fullpath":
-            name = ind.value.replace("\\", "/").rsplit("/", 1)[-1] or None
-            files.append(FileEvidence(name=name, path=ind.value))
-            seen.add(key)
-        elif "sha256" in ind_kind:
-            files.append(FileEvidence(sha256=ind.value.lower()))
-            seen.add(key)
+
+def _verdict_from_act_result(alert: WorkbenchAlert) -> str | None:
+    """indicator field='actResult' -> verdict descriptivo.
+
+    TV1 reporta la accion tomada sobre el archivo, no un juicio de maldad:
+      "File passed"                 -> not_blocked  (¡lo dejo pasar!)
+      "File quarantined"/"cleaned"  -> blocked
+    NO mapeamos a "malicious" a proposito: seria poner en boca de Trend algo
+    que no dijo. El LLM razona mejor con el dato real que con una etiqueta
+    inflada, y una etiqueta falsa se paga cuando induce una accion equivocada.
+    """
+    for ind in alert.indicators:
+        if ind.field != "actResult" or not isinstance(ind.value, str):
+            continue
+        raw = ind.value.strip()
+        if not raw:
+            continue
+        lowered = raw.lower()
+        if "pass" in lowered or "not blocked" in lowered:
+            return "not_blocked"
+        if any(word in lowered for word in ("block", "quarantin", "clean", "delet", "terminat")):
+            return "blocked"
+        return raw  # valor desconocido: lo pasamos crudo, mejor que perderlo
+    return None
+
+
+def _files_from_indicators(alert: WorkbenchAlert) -> list[FileEvidence]:
+    """Indicators de archivo -> FileEvidence, FUSIONADOS en una sola evidencia.
+
+    OJO: TV1 desparrama los datos de UN archivo en varios indicators
+    (filename, fullpath, file_sha256, file_sha1, actResult). La version
+    anterior generaba un FileEvidence suelto por cada uno -> el Narrator veia
+    N archivos donde hay uno, y el hash quedaba huerfano (sin nombre ni path).
+
+    Los indicators traen relatedEntities/filterIds pero NO un id de archivo,
+    asi que no hay forma fiable de agrupar multiples archivos distintos. Como
+    en la practica una alerta de Workbench gira alrededor de un archivo,
+    fusionamos todo en una evidencia. Si aparecen varios paths, el primero es
+    el principal y el resto van como evidencias solo-path (sin duplicar hash).
+    """
+    names = _indicator_values(alert, "filename")
+    paths = _indicator_values(alert, "fullpath")
+    sha256s = _indicator_values(alert, "file_sha256")
+    sha1s = _indicator_values(alert, "file_sha1")
+    md5s = _indicator_values(alert, "file_md5")
+    verdict = _verdict_from_act_result(alert)
+
+    if not (names or paths or sha256s or sha1s or md5s):
+        return []
+
+    main_path = paths[0] if paths else None
+    # name: preferimos el indicator explicito; si no vino, lo derivamos del path
+    main_name = names[0] if names else _basename(main_path)
+
+    files = [
+        FileEvidence(
+            name=main_name,
+            path=main_path,
+            sha256=sha256s[0].lower() if sha256s else None,
+            sha1=sha1s[0].lower() if sha1s else None,
+            md5=md5s[0].lower() if md5s else None,
+            verdict=verdict,
+        )
+    ]
+    # Paths extra (raro): evidencia solo-path, sin repetir hashes
+    for extra_path in paths[1:]:
+        files.append(
+            FileEvidence(name=_basename(extra_path), path=extra_path, verdict=verdict)
+        )
     return files
+
+
+def _basename(path: str | None) -> str | None:
+    """'C:\\dir\\nc.exe' -> 'nc.exe'. Maneja separadores Windows y Unix."""
+    if not path:
+        return None
+    return path.replace("\\", "/").rstrip("/").rsplit("/", 1)[-1] or None
 
 
 def _dst_ip_from_indicators(alert: WorkbenchAlert) -> str | None:
@@ -170,6 +232,53 @@ def _dst_ip_from_indicators(alert: WorkbenchAlert) -> str | None:
         if ind.type == "ip" and isinstance(ind.value, str) and ind.value:
             return ind.value
     return None
+
+
+# Palabras clave del modelo de deteccion / detection_name -> category.
+# El system prompt del Triage razona sobre category ("Malware", "Credential
+# Access", etc.). El modelType de TV1 ("preset"/"custom") no le dice nada, asi
+# que traducimos el NOMBRE del modelo a un vocabulario que el agente entiende.
+# Orden importa: la primera coincidencia gana (mas especifico primero).
+_CATEGORY_KEYWORDS: list[tuple[tuple[str, ...], str]] = [
+    (("ransomware",), "Ransomware"),
+    (("credential", "mimikatz", "lsass", "password dump"), "Credential Access"),
+    (("privilege escalation", "privesc", "elevation"), "Privilege Escalation"),
+    (("lateral movement", "psexec", "remote exec"), "Lateral Movement"),
+    (("persistence", "scheduled task", "autostart", "run key"), "Persistence"),
+    (("exfiltration", "data leak", "data theft"), "Exfiltration"),
+    (("phishing", "initial access", "exploit", "vulnerability"), "Initial Access"),
+    (("hacking tool", "hktl", "grayware", "riskware", "pua", "potentially unwanted"), "Hacking Tool"),
+    (("malware", "trojan", "backdoor", "virus", "worm", "troj_", "bkdr_"), "Malware"),
+    (("command and control", "c&c", "callback", "botnet"), "Command and Control"),
+]
+
+
+def _category_from_model(alert: WorkbenchAlert, detection_name: str | None) -> str:
+    """Modelo de deteccion + detection_name -> category del vocabulario del Triage.
+
+    Sin coincidencia -> "tv1_<modelType>" (comportamiento previo): preferimos
+    una categoria neutra antes que forzar una etiqueta que no corresponde.
+    """
+    haystack = " ".join(
+        part.lower() for part in (alert.model, alert.description, detection_name) if part
+    )
+    for keywords, category in _CATEGORY_KEYWORDS:
+        if any(keyword in haystack for keyword in keywords):
+            return category
+    return f"tv1_{alert.model_type}" if alert.model_type else "tv1_workbench"
+
+
+def _mitre_groups(alert: WorkbenchAlert) -> list[str]:
+    """mitreTechniqueIds de todos los matchedFilters, deduplicados y ordenados.
+
+    En muchas alertas (p.ej. las de product event log) viene vacio; cuando la
+    deteccion es del motor de correlacion suele traer T1059, T1078, etc.
+    """
+    techniques: set[str] = set()
+    for rule in alert.matched_rules:
+        for mf in rule.matched_filters:
+            techniques.update(t for t in mf.mitre_technique_ids if t)
+    return sorted(techniques)
 
 
 def normalize_tv1(raw_payload: dict[str, Any]) -> NormalizedAlert:
@@ -200,20 +309,38 @@ def normalize_tv1(raw_payload: dict[str, Any]) -> NormalizedAlert:
         dst_ip=_dst_ip_from_indicators(alert),
     )
 
+    # detection_name: el nombre que Trend le puso a la deteccion (ej HKTL_NETCAT).
+    # Es la senal mas concreta de QUE detecto; va a threat.family (que hasta
+    # ahora quedaba vacio) y alimenta el mapeo de category.
+    detection_names = _indicator_values(alert, "detection_name")
+    detection_name = detection_names[0] if detection_names else None
+
     threat = Threat(
         provider="Trend Vision One",
+        family=detection_name,
         display_name=alert.model or None,
         incident_id=alert.incident_id or None,
         alert_url=alert.workbench_link or None,
+        # El Triage mira incident_url para detectar "multiples evidencias en el
+        # mismo incidente". TV1 no da una URL de incidente aparte, pero el
+        # workbenchLink pertenece al incidente: lo reusamos cuando hay incidentId.
+        incident_url=alert.workbench_link or None if alert.incident_id else None,
     )
 
     # El "detection model" de TV1 ocupa el lugar de la rule de Wazuh.
     matched_names = [r.name for r in alert.matched_rules if r.name]
+    groups = ["tv1"]
+    if alert.alert_provider:
+        groups.append(alert.alert_provider.lower())
+    # Tecnicas MITRE como groups: el prompt del Triage busca senales tipo
+    # credential_access / lateral_movement ahi. Cuando TV1 las trae, las pasamos.
+    groups.extend(_mitre_groups(alert))
+
     wazuh_rule = WazuhRule(
         id=None,
         level=_SYNTHETIC_LEVEL[severity],
         description=alert.model or (matched_names[0] if matched_names else "TV1 Workbench alert"),
-        groups=["tv1"] + ([alert.alert_provider.lower()] if alert.alert_provider else []),
+        groups=groups,
     )
 
     title = alert.model or alert.description or "TV1 Workbench alert"
@@ -225,7 +352,7 @@ def normalize_tv1(raw_payload: dict[str, Any]) -> NormalizedAlert:
         wazuh_rule=wazuh_rule,
         severity_source=severity,
         title=title,
-        category=f"tv1_{alert.model_type}" if alert.model_type else "tv1_workbench",
+        category=_category_from_model(alert, detection_name),
         device=device,
         users_involved=users,
         files=_files_from_indicators(alert),

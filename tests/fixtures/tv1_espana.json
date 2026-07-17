@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.21",
+  "id": "WB-14106-20260618-00012",
+  "investigationStatus": "New",
+  "status": "Open",
+  "investigationResult": "No Findings",
+  "workbenchLink": "https://portal.eu.xdr.trendmicro.com/index.html#/workbench/alerts/WB-14106-20260618-00012?ref=REDACTED",
+  "alertProvider": "SAE",
+  "modelId": "23cc775c-976d-4103-81ef-a98c3fa1f174",
+  "model": "Hacking Tool Detection - Not Blocked",
+  "modelType": "preset",
+  "score": 45,
+  "severity": "high",
+  "createdDateTime": "2026-06-18T10:36:30Z",
+  "updatedDateTime": "2026-06-18T10:36:53Z",
+  "ownerIds": [],
+  "incidentId": "IC-14106-20260618-00002",
+  "impactScope": {
+    "desktopCount": 1, "serverCount": 0, "accountCount": 0, "emailAddressCount": 0,
+    "containerCount": 0, "cloudIdentityCount": 0, "cloudWorkloadCount": 0,
+    "entities": [
+      {
+        "entityType": "host",
+        "entityValue": {"guid": "A3056AC8-AB4F-4FB2-8935-3574C85F2D5E", "name": "WIN7A", "ips": [""]},
+        "entityId": "A3056AC8-AB4F-4FB2-8935-3574C85F2D5E",
+        "relatedEntities": [], "relatedIndicatorIds": [1,2,3,4,5,6,7], "provenance": ["Alert"]
+      }
+    ]
+  },
+  "description": "A hacking tool which may be used for security testing or malicious intent detected on an endpoint was not blocked.",
+  "matchedRules": [
+    {
+      "id": "33cef57c-ed51-4916-b943-a15cfaa813a2",
+      "name": "Hacking Tool Detection - Not Blocked",
+      "matchedFilters": [
+        {"id": "78c4a866-2b0b-4430-a364-ebc1e4e6e05e", "name": "Hacking Tool Detection - Not Blocked",
+         "matchedDateTime": "2026-06-18T10:00:00.000Z", "mitreTechniqueIds": [],
+         "matchedEvents": [{"uuid": "c5707082-7e0a-4b12-ace5-35f34d794846", "matchedDateTime": "2026-06-18T10:00:00.000Z", "type": "PRODUCT_EVENT_LOG"}]}
+      ]
+    }
+  ],
+  "indicators": [
+    {"id": 1, "type": "detection_name", "field": "malName", "value": "HKTL_NETCAT", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]},
+    {"id": 2, "type": "file_sha1", "field": "fileHash", "value": "", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]},
+    {"id": 3, "type": "file_sha256", "field": "fileHashSha256", "value": "B3B207DFAB2F429CC352BA125BE32A0CAE69FE4BF8563AB7D0128BBA8C57A71C", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]},
+    {"id": 4, "type": "filename", "field": "fileName", "value": "nc.exe", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]},
+    {"id": 5, "type": "fullpath", "field": "fullPath", "value": "C:\\$Recycle.Bin\\S-1-5-21-672254305-3510136850-3083565644-1000\\$R9ZQM6G.11\\netcat-1.11\\nc.exe", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]},
+    {"id": 6, "type": "fullpath", "field": "filePathName", "value": "C:\\$Recycle.Bin\\S-1-5-21-672254305-3510136850-3083565644-1000\\$R9ZQM6G.11\\netcat-1.11\\nc.exe", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]},
+    {"id": 7, "type": "text", "field": "actResult", "value": "File passed", "relatedEntities": ["A3056AC8-AB4F-4FB2-8935-3574C85F2D5E"], "filterIds": ["78c4a866-2b0b-4430-a364-ebc1e4e6e05e"], "provenance": ["Alert"]}
+  ]
+}

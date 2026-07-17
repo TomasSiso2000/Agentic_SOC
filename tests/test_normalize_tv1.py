@@ -10,7 +10,13 @@ from pathlib import Path
 import pytest
 
 from src.models import NormalizedAlert
-from src.normalize_tv1 import _classify_host_ips, _parse_account, normalize_tv1
+from src.normalize_tv1 import (
+    _basename,
+    _category_from_model,
+    _classify_host_ips,
+    _parse_account,
+    normalize_tv1,
+)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -18,6 +24,17 @@ FIXTURES = Path(__file__).parent / "fixtures"
 @pytest.fixture
 def raw_alert() -> dict:
     with open(FIXTURES / "tv1_workbench_completa.json", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+@pytest.fixture
+def raw_alert_hktl() -> dict:
+    """Alerta real (lab): Hacking Tool Detection - Not Blocked (netcat).
+
+    Trae los campos que la otra fixture no tiene: detection_name, file_sha256,
+    filename explicito y actResult. Es la que ejercita el enriquecimiento.
+    """
+    with open(FIXTURES / "tv1_espana.json", encoding="utf-8") as fh:
         return json.load(fh)
 
 
@@ -45,7 +62,7 @@ class TestNormalizeTv1:
         assert alert.device.internal_ip == alert.network.src_ip_internal
 
     def test_files_desde_indicators_fullpath(self, raw_alert):
-        """El fixture tiene 10 fullpath (con repetidos): deduplicados, con name."""
+        """El fixture tiene 10 fullpath distintos: deduplicados, con name."""
         alert = normalize_tv1(raw_alert)
         assert alert.files  # al menos uno
         assert all(f.path for f in alert.files)
@@ -75,6 +92,131 @@ class TestNormalizeTv1:
         raw_alert["severity"] = "ultra-mega-critical"  # valor futuro de Trend
         alert = normalize_tv1(raw_alert)
         assert alert.severity_source == "medium"
+
+
+# ---------------------------------------------------------------------------
+# Enriquecimiento (Fase 5): campos que el system prompt del Triage consume
+# ---------------------------------------------------------------------------
+
+class TestEnriquecimientoHktl:
+    """Contra la alerta real de netcat: los datos que TV1 desparrama en varios
+    indicators tienen que llegar al Triage fusionados y completos."""
+
+    def test_un_solo_file_con_todo_junto(self, raw_alert_hktl):
+        """REGRESION: antes salian 2 FileEvidence (path sin hash + hash huerfano)."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert len(alert.files) == 1
+        f = alert.files[0]
+        assert f.name == "nc.exe"
+        assert f.sha256 == "b3b207dfab2f429cc352ba125be32a0cae69fe4bf8563ab7d0128bba8c57a71c"
+        assert f.path and f.path.endswith("nc.exe")
+        assert f.verdict == "not_blocked"
+
+    def test_sha256_normalizado_a_minusculas(self, raw_alert_hktl):
+        """TV1 lo manda en MAYUSCULAS; VirusTotal espera lowercase."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.files[0].sha256 == alert.files[0].sha256.lower()
+
+    def test_sha1_vacio_no_se_cuela(self, raw_alert_hktl):
+        """El indicator file_sha1 viene con value='' -> None, no cadena vacia."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.files[0].sha1 is None
+
+    def test_name_del_indicator_explicito(self, raw_alert_hktl):
+        """Preferimos el indicator 'filename' antes que derivar del path."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.files[0].name == "nc.exe"
+
+    def test_verdict_not_blocked_desde_act_result(self, raw_alert_hktl):
+        """actResult='File passed' -> not_blocked (NO 'malicious': Trend no dijo eso)."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.files[0].verdict == "not_blocked"
+
+    def test_family_desde_detection_name(self, raw_alert_hktl):
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.threat.family == "HKTL_NETCAT"
+
+    def test_category_hacking_tool(self, raw_alert_hktl):
+        """'Hacking Tool Detection' -> vocabulario que el prompt del Triage entiende."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.category == "Hacking Tool"
+
+    def test_incident_url_cuando_hay_incident_id(self, raw_alert_hktl):
+        """El prompt mira incident_url para 'multiples evidencias en el incidente'."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.threat.incident_id == "IC-14106-20260618-00002"
+        assert alert.threat.incident_url is not None
+
+    def test_sin_incident_id_no_hay_incident_url(self, raw_alert_hktl):
+        raw_alert_hktl["incidentId"] = ""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.threat.incident_url is None
+
+
+class TestCategoryMapping:
+    @pytest.mark.parametrize("model,esperado", [
+        ("Hacking Tool Detection - Not Blocked", "Hacking Tool"),
+        ("Ransomware Behavior Detected", "Ransomware"),
+        ("Mimikatz Credential Dumping", "Credential Access"),
+        ("Suspicious PsExec Lateral Movement", "Lateral Movement"),
+        ("Scheduled Task Persistence", "Persistence"),
+        ("Trojan Detected on Endpoint", "Malware"),
+        ("Possible Data Exfiltration", "Exfiltration"),
+        ("C&C Callback Detected", "Command and Control"),
+    ])
+    def test_keywords_conocidas(self, raw_alert_hktl, model, esperado):
+        raw_alert_hktl["model"] = model
+        raw_alert_hktl["description"] = ""
+        # Sin detection_name para aislar el mapeo por nombre de modelo
+        raw_alert_hktl["indicators"] = [
+            i for i in raw_alert_hktl["indicators"] if i["type"] != "detection_name"
+        ]
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.category == esperado
+
+    def test_sin_coincidencia_cae_en_fallback(self, raw_alert_hktl):
+        """Sin keyword conocida NO inventamos categoria: fallback neutro."""
+        raw_alert_hktl["model"] = "Algo Totalmente Nuevo De Trend"
+        raw_alert_hktl["description"] = ""
+        raw_alert_hktl["indicators"] = [
+            i for i in raw_alert_hktl["indicators"] if i["type"] != "detection_name"
+        ]
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.category == "tv1_preset"
+
+    def test_detection_name_tambien_alimenta_la_category(self, raw_alert_hktl):
+        """Si el modelo no dice nada, el detection_name (HKTL_) puede decidir."""
+        raw_alert_hktl["model"] = "Generic Detection"
+        raw_alert_hktl["description"] = ""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.category == "Hacking Tool"  # por HKTL_NETCAT
+
+
+class TestMitreGroups:
+    def test_sin_mitre_solo_tv1_y_provider(self, raw_alert_hktl):
+        """Esta alerta (product event log) no trae tecnicas MITRE."""
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.wazuh_rule.groups == ["tv1", "sae"]
+
+    def test_con_mitre_las_agrega_como_groups(self, raw_alert_hktl):
+        """Cuando TV1 trae mitreTechniqueIds, van a groups (dedup + ordenadas)."""
+        raw_alert_hktl["matchedRules"][0]["matchedFilters"][0]["mitreTechniqueIds"] = [
+            "T1059", "T1078", "T1059",
+        ]
+        alert = normalize_tv1(raw_alert_hktl)
+        assert alert.wazuh_rule.groups == ["tv1", "sae", "T1059", "T1078"]
+
+
+class TestBasename:
+    @pytest.mark.parametrize("path,esperado", [
+        ("C:\\dir\\nc.exe", "nc.exe"),
+        ("/usr/bin/nc", "nc"),
+        ("nc.exe", "nc.exe"),
+        (None, None),
+        ("", None),
+    ])
+    def test_basename(self, path, esperado):
+        assert _basename(path) == esperado
 
 
 # ---------------------------------------------------------------------------
