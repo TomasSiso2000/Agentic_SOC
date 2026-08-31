@@ -10,7 +10,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 UserRole = Literal["logged_on", "file_path_owner", "event_user"]
-AlertSource = Literal["defender_via_wazuh", "wazuh_native", "tv1_workbench"]
+AlertSource = Literal["defender_via_wazuh", "wazuh_native", "tv1_workbench", "tv1_webhook"]
 Severity = Literal["informational", "low", "medium", "high", "critical"]
 
 
